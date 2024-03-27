@@ -8,6 +8,10 @@ import javax.swing.border.EmptyBorder;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import Controle.LoginBD;
+import Modelo.Funcionario;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -22,6 +26,8 @@ import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaLogin extends JFrame {
 
@@ -50,6 +56,7 @@ public class TelaLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaLogin() {
+		TelaLogin TL = this;
 		this.setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1500, 1200);
@@ -89,6 +96,14 @@ public class TelaLogin extends JFrame {
 		contentPane.add(txtSenha);
 		
 		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login();
+				TelaPagamento TP = new TelaPagamento(TL);
+				TP.setVisible(true);
+				dispose();
+			}
+		});
 		btnEntrar.setForeground(new Color(255, 255, 255));
 		btnEntrar.setBackground(new Color(0, 0, 0));
 		btnEntrar.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -116,5 +131,19 @@ public class TelaLogin extends JFrame {
 		lblNewLabel_3.setIcon(new ImageIcon(TelaLogin.class.getResource("/Imagens/estacionamento.png")));
 		lblNewLabel_3.setBounds(900, 132, 396, 371);
 		contentPane.add(lblNewLabel_3);
+	}
+	
+	private void Login() {
+		String email, senha;
+		
+		email = txtEmail.getText();
+		senha = txtSenha.getText();
+		
+		Funcionario f = new Funcionario();
+		f.setEmail(email);
+		f.setSenha(senha);
+		
+		LoginBD lBD = new LoginBD();
+		lBD.pesquisarFuncionario();
 	}
 }
